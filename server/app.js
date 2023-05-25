@@ -25,23 +25,25 @@ const User = mongoose.model("UserInfo");
 app.post("/register", async(req,res)=> {
     const {fname,lname,email,password} = req.body
 
-    const encryptedPassword = await bcrypt.hash(password,10)
+    const encryptedPassword = await bcrypt.hash(password,10)// to encrypt the password
+
     try{
 
         const oldUser = await User.findOne({email});
+
         if(oldUser){
-            return res.send({error:"User exists"});
+            return res.send({error:"User exists"});// so as to make sure the same email is not registered twice
         }
 
-
         await User.create({
-            fname,
-            lname,
-            email,
+            fname:fname,
+            lname:lname,
+            email:email,
             password:encryptedPassword,
         });
         res.send({status:"ok"})
     }
+    
     catch(error){
         res.send("error");
     }
