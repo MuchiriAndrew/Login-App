@@ -3,6 +3,9 @@ const app = express();
 const mongoose = require('mongoose')
 const cors = require('cors')
 const bcrypt = require('bcryptjs')
+const jwt = require("jsonwebtoken")
+
+const JWT_SECRET="wiufhwqhdqw9dwqd90wwmqdjwqdujqiwhdwqjded832u99010djdsk"
 
 app.use(cors());
 app.use(express.json());
@@ -43,11 +46,39 @@ app.post("/register", async(req,res)=> {
         });
         res.send({status:"ok"})
     }
-    
+
     catch(error){
         res.send("error");
     }
 })
+
+
+
+// create our login API
+
+app.post("/login-user", async(req,res)=> {
+    const { email, password } = req.body //this is what we are getting from the webpage
+
+    const user = await User.findOne({email});
+
+    if(!user){
+        return res.send({error:"User Not Found"});// if the user does not exist
+    }
+
+    //check and decrypt password
+    if(await bcrypt.compare(password, user.password)){// compare password with user passsword
+
+        const token = jwt.sign({}, JWT_SECRET)//generate jwt token
+    
+        if(res.status(201)){//status code 201 means request was successful
+            return res.json({status:"ok", data: token });
+        } else {
+            return res.json({error: "error"});
+        }
+    }   
+
+    res.json({status:"error", error: "Invalid password"})
+});
 
 
 app.listen(5000, () => {

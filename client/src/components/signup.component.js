@@ -17,7 +17,7 @@ export default class SignUp extends Component {
 
     e.preventDefault();
     const{fname,lname,email,password} = this.state;
-    // console.log(fname,lname,email,password);
+    console.log(fname,lname,email,password);
 
     fetch("http://localhost:5000/register", {
       method:"POST",
@@ -27,7 +27,7 @@ export default class SignUp extends Component {
         Accept:"application/json",
         "Access-Control-Allow-Origin":"*",
       },
-      
+
       body:JSON.stringify({
         fname,
         lname,
