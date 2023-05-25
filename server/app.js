@@ -68,8 +68,9 @@ app.post("/login-user", async(req,res)=> {
     //check and decrypt password
     if(await bcrypt.compare(password, user.password)){// compare password with user passsword
 
-        const token = jwt.sign({}, JWT_SECRET)//generate jwt token
+        const token = jwt.sign({email:user.email}, JWT_SECRET)//generate jwt token
     
+        
         if(res.status(201)){//status code 201 means request was successful
             return res.json({status:"ok", data: token });
         } else {
@@ -79,6 +80,33 @@ app.post("/login-user", async(req,res)=> {
 
     res.json({status:"error", error: "Invalid password"})
 });
+
+
+// API for user data
+
+
+app.post("/user-data", (req,res)=> {
+    const{token} = req.body;
+    try{
+
+    const user = jwt.verify(token, JWT_SECRET);// verify the user details and store it inside a variable
+        console.log(user);
+
+    const userEmail = user.email;
+    User.findOne({ email: userEmail })
+    .then((data) => {
+        res.send({status:'ok', data:data})
+    })
+    .catch((error)=> {
+        res.send({status:"error", data:data})
+    })
+    
+    }
+    catch{
+
+    }
+
+})
 
 
 app.listen(5000, () => {
