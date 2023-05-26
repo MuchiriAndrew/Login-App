@@ -21,9 +21,9 @@ mongoose.connect(mongoUrl, {
 //create a register API
 
 
-require("./userDetails")
+require("./userDetails")// import the schema file
 
-const User = mongoose.model("UserInfo");
+ const User = mongoose.model("UserInfo");// You can now use the User to interact with the MongoDB collection in your application.
 
 app.post("/register", async(req,res)=> {
     const {fname,lname,email,password} = req.body
@@ -32,7 +32,7 @@ app.post("/register", async(req,res)=> {
 
     try{
 
-        const oldUser = await User.findOne({email});
+        const oldUser = await User.findOne({email});//Returns one document that satisfies the specified query criteria on the collection or view.
 
         if(oldUser){
             return res.send({error:"User exists"});// so as to make sure the same email is not registered twice
@@ -43,7 +43,7 @@ app.post("/register", async(req,res)=> {
             lname:lname,
             email:email,
             password:encryptedPassword,
-        });
+        });//to create and store new documents in a MongoDB collection. 
         res.send({status:"ok"})
     }
 

@@ -1,3 +1,4 @@
+//this is our schema file
 const mongoose = require('mongoose');
 
 const userDetailsSchema = new mongoose.Schema(
@@ -7,9 +8,10 @@ const userDetailsSchema = new mongoose.Schema(
         email: {type:String, unique:true },
         password:String,
     },
+
     {
         collection: "UserInfo",
     }
 );
 
-mongoose.model('UserInfo', userDetailsSchema);
+mongoose.model("UserInfo", userDetailsSchema);//Create a model using the defined schema:

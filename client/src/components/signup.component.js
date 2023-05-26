@@ -34,7 +34,8 @@ export default class SignUp extends Component {
         email,
         password
       }),
-    }).then((res)=>res.json())
+    })
+    .then((res)=>res.json())
     .then((data)=>{
       console.log(data, "userRegister");
     })
